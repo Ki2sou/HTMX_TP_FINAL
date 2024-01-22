@@ -1,0 +1,15 @@
+<div id="task-details">
+    <h2>Edit Task</h2>
+    <form method="post" action="{% url 'edit_task' task.id %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Save Changes</button>
+      <button type="button" id="cancel-button" class="btn btn-secondary">Cancel</button>
+    </form>
+</div>
+
+<script>
+  document.getElementById('cancel-button').addEventListener('click', function() {
+    window.location.href = "{% url 'db_tasks' %}";
+  });
+</script>

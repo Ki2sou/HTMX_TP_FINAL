@@ -1,0 +1,10 @@
+{% if results %}
+    <p>Results</p>
+    <ul class='list-group col-xs-12'>
+        {% for task in results %}
+            <li> {{ task.description }} </li>
+        {% endfor %}
+    </ul>
+{% else %}
+<p>No Results</p>
+{% endif %}

@@ -1,0 +1,6 @@
+<ul id="task-list-items">
+  {% for task in tasks %}
+    <li>{{ task.description|upper }}</li><br>
+    <a href="{% url 'task_detail' task.id %}">Detail</a>
+  {% endfor %}
+</ul>

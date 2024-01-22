@@ -1,0 +1,6 @@
+<div id="task-details">
+    <h2>Task Details</h2>
+    <p>Description: {{ task.description }}</p>
+    <a href="{% url 'edit_task' task.id %}" hx-get="#task-details" hx-swap="outerHTML" hx-indicator="#task-details-indicator">Edit Task</a>
+    <a href="{% url 'db_tasks' %}" class="btn btn-secondary">Cancel</a>
+</div>

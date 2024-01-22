@@ -1,0 +1,31 @@
+{% if 'db_tasks' not in request.path %}
+    {% if tasks %}
+        <ul>
+            {% for task in tasks%}
+            <li>{{task.description}}<span class="badge bg-danger text-light"
+                style="cursor:pointer;"
+                hx-delete="{% url 'supp_task' task.id %}"
+                hx-target="#task-list"
+                hx-confirm="Delete this task ?">X</span>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+    <p>You dont have any task</p>
+    {% endif %}
+
+    <section class="col 4 justify-content-end">
+        {% include "task/search.html" %}
+    </section>
+{% else %}
+    {% if tasks %}
+        <ul>
+            {% for task in tasks%}
+            <li>{{task.description}}<span class="badge bg-danger text-light"
+                style="cursor:pointer;"
+                hx-target="#task-list"></span>
+            </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endif %}

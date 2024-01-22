@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    {% if 'db_tasks_pag' not in request.path %}
+    <button onclick="window.open('{% url 'db_tasks_pag' %}')" hx-trigger="click" hx-indicator="#task-list-indicator">View Pagination</button>
+    {% else %}
+    <button onclick="window.close()" hx-trigger="click" hx-indicator="#task-list-indicator">Exit Pagination</button>
+    {% endif %}
+    <div id="task-list" hx-target="#task-list">
+      <h2>All Tasks from the DataBase</h2>
+      <ul id="task-list-items">
+        {% for task in tasks %}
+          <li>
+            {{ task.description}}
+            <!-- Afficher le nombre d'utilisateurs affectés à la tâche -->
+            <span class="badge bg-secondary">
+              {{ task.users.all.count }} users
+            </span>
+            <!-- Afficher la liste des noms des utilisateurs affectés à la tâche -->
+            <ul>
+              {% for user in task.users.all %}
+                <li>{{ user.username }}</li>
+              {% endfor %}
+            </ul>
+            <!-- Afficher le numéro d'ordre de la tâche -->
+            <span class="badge bg-info">
+              Task {{ task.id }}
+            </span>
+            <a href="{% url 'task_detail' task.id %}">Detail</a>
+            <!-- Bouton pour s'inscrire/désinscrire -->
+            <button hx-post="{% url 'toggle_task_subscription' task.id %}" hx-trigger="click" hx-indicator="#task-details-indicator">
+              {% if request.user in task.users.all %}
+                Unsubscribe
+              {% else %}
+                Subscribe
+              {% endif %}
+            </button>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    
+    {% if tasks.has_other_pages %}
+    <div class="pagination">
+      <span class="step-links">
+          {% if tasks.has_previous %}
+              <a href="?page=1">&laquo; first</a>
+              <a href="?page={{ tasks.previous_page_number }}">previous</a>
+          {% endif %}
+  
+          <span class="current">
+              Page {{ tasks.number }} of {{ tasks.paginator.num_pages }}.
+          </span>
+  
+          {% if tasks.has_next %}
+              <a href="?page={{ tasks.next_page_number }}">next</a>
+              <a href="?page={{ tasks.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+      </span>
+    </div>
+    {% endif %} 
+  </div>
+{% endblock content %}
